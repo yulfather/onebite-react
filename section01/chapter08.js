@@ -47,5 +47,5 @@ let var8 = 10;
 // 요구사항 : 변수 res에 var8에 값이 "짝수", "홀수" 반환되는 코드
 // 조건식 ? true일 때 반환값 : false일 때 반환값
 let res = var8 % 2 === 0 ? "짝수" : "홀수";
-console.log(res);
+console.log(res); // 짝수
 
