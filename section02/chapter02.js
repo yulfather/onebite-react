@@ -98,7 +98,7 @@ function printNameYul2(person) {
   const name = person && person.name;
   console.log(name || "person에 값이 없습니다.");
 }
-printNameYul2();
-printNameYul2({name: "soyul"});
+printNameYul2(); // person에 값이 없습니다.
+printNameYul2({name: "soyul"}); // soyul
 
 
