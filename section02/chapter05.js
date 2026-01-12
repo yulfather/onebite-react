@@ -93,4 +93,74 @@ function change1(obj) {
 }
 const data = {value: 10};
 change1(data);
-console.log(data); // 100 -> 참조공유
+console.log(data); // {value: 100} -> 참조공유
+
+// 4-2. 객체 안전하게 복사하는 방법(실무중요)
+
+// ❌ 얕은 복사 위험
+const user = {name: "soyul"};
+const copy = user;
+copy.name = "park"; // 원본변경 위험
+console.log(user); // {name: 'park'}
+console.log(copy); // {name: 'park'}
+
+// ✅ 얕은 복사 (1단계) - {...user} 중괄호 + 스프레드 적용
+const shallowCopy = {...user};
+shallowCopy.name = "kim";
+console.log(user); // {name: 'park'}
+console.log(shallowCopy); // {name: 'kim'}
+
+// 얕은 복사 예제
+const user3 = {
+  name: "soyul",
+  address: {city: "paju"}
+};
+
+const shallowCopy2 = {...user3};
+
+shallowCopy2.name = "kim";
+shallowCopy2.address.city = "ansan";
+
+console.log(user3.name); // "soyul" (원본유지)
+console.log(user3.address.city); // "ansan" (원본변경)
+// 왜 문제가 될까?
+// address는 객체이기 때문에 얕은 복사는 address의 참조주소를 공유
+
+// 언제 얕은 복사를 써도 되는가?
+// 객체구조가 1단계, 중첩 객체가 없음, React state의 부분변경
+
+// 4-3. 대표적인 깊은 복사 방법
+
+// 4-3-1. JSON방식(가장쉬움)
+// const deepCopy = JSON.parse(JSON.stringify(user));
+//  -> 장점 : 간단, 대부분의 데이터 구조에서 충분
+//  -> 단점 : 함수, Date, Map, Set, undefined, Symbol 사용안됨❌
+//    -> 함수는 undefined처리
+
+// 4-3-2. structuredClone(최신표준)
+// const deepCopy = structuredClone(user);
+//  -> 장점 : Date, Map, Set 지원, 가장안전
+//  -> 단점 : 구형 브라우저 미지원
+
+// 4-4. 깊은 복사 예제
+const user4 = {
+  name: "soyul",
+  address: {city: "paju"}
+};
+const deepCopy = structuredClone(user4);
+deepCopy.address.city = "ansan";
+
+console.log(user4.address.city); // paju
+console.log(deepCopy.address.city); // ansan
+
+// 알아두어야 개념
+// 함수는 데이터가 아니라 실행 로직이다
+// 함수는 클로저를 포함한다.
+// 함수는 자신이 선언된 렉시컬 환경을 할께 들고 있다.
+// 이걸 깊은 복사하는다는 것은: 실행 컨텍스트, 스코프체인, 환경레코드 -> 전부복제?
+//  -> JS엔진이 허용하지 않음
+// 따라서 함수는 structuredClone()에 대상이 될 수 없다 
+
+// 클래스 인스턴스
+// 데이터만 복사됨
+// 메서드, 타입정보 사라짐 따라서 효용성이 없음
