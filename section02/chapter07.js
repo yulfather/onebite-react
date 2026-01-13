@@ -59,3 +59,17 @@ let arr7 = [3, 4];
 
 let concatedArr = arr6.concat(arr7);
 console.log(concatedArr); // (4) [1, 2, 3, 4]
+
+// 7. splice - 원본변경(가장 중요한 "요소 조작" 메서드)
+// splice(start, deleteCount, ...items)
+// start 위치부터 deleteCount만큼 삭제하고, items를 그 자리에 삽입
+// 반환 -> 삭제된 요소들의 배열
+const arr8 = ["a", "b", "c", "d"];
+
+// "b" 다음에 "x"넣기
+arr8.splice(2, 0, "x"); // start = 2, delete = 0
+console.log(arr8); // ['a', 'b', 'x', 'c', 'd'] 원본변경
+
+// 끼워넣기 없이 삭제만
+const spliceArr = arr8.splice(1, 2);
+console.log(spliceArr); // ['b', 'x'] 삭제반환된 배열
