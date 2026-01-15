@@ -130,7 +130,7 @@ promise2.catch((error) => {
   console.log(error); // num이 없다
 });
 
-// then() 메서는 Promise를 다시한번 반환함
+// then() 메서드는 Promise를 다시한번 반환함
 // then().then().catch()형식으로 연결하여 사용가능
 //  -> Promise Chaining
 promise2
