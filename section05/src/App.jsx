@@ -4,6 +4,7 @@ import Main from "./components/Main";
 import Footer from "./components/Footer";
 import Button from "./components/Button";
 import Parent from "./components/Props";
+import EventHandlerButton from "./components/EventHandling";
 
 // component
 // javascript함수가 html코드를 반환하도록 하는 함수
@@ -36,6 +37,12 @@ function App() {
 
   return (
     <>
+      <EventHandlerButton name={"kyoungmin"} color="red">
+        <div>soyul</div>
+      </EventHandlerButton>
+      <EventHandlerButton name={"jihiundia"} color="green">
+        <div>soyul</div>
+      </EventHandlerButton>
       <Button text={"메일"} color={"red"} />
       <Button text={"카페"} color={"yellow"} />
       <Button text={"블로그"} color={"blue"} />
