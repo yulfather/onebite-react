@@ -48,10 +48,10 @@ const Main = () => {
 
   return (
     <main>
+      <Main1 />
       <h1>main</h1>
       <h2>{number % 2 === 0 ? "짝수" : "홀수"}</h2>
       <h2>{`내이름은 ${obj.name}야 나이는${obj.age}살이야`}</h2>
-      <Main1 />
     </main>
   );
 };
