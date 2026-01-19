@@ -62,3 +62,4 @@ function App() {
 //  - hookIndex가 호출 순서를 기억하는 키
 //  - setState는 currentIndex를 클로저로 기억해서 "자기 상태 칸"을 업데이트
 //  - 상태 업데이트 후 scheduleRender()로 리렌더
+export default App;
