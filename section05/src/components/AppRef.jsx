@@ -24,7 +24,7 @@ import { useRef, useState } from "react";
 // 일반변수: let count = 0; -> 렌더링 마다 초기화
 // useRef: const countRef = useRef(0); -> 렌더링 마다 값유지
 
-function App() {
+function AppRef() {
   let normal = 0;
   const ref = useRef(0);
   const [, setRender] = useState(0);
@@ -84,4 +84,4 @@ function App() {
 // - DOM을 직접 제어해야 함
 // - 렌더링 성능을 건드리고 싶지 않음
 
-export default App;
+export default AppRef;

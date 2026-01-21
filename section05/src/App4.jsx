@@ -3,14 +3,16 @@ import Register from "./components/Register";
 import { InputExample1, InputExample2 } from "./components/InputExample";
 import LoginForm from "./components/LoginForm";
 import NewRegister from "./components/NewRegister";
-import App from "./components/UseReferance";
+import AppRef from "./components/AppRef";
+import RefRegister from "./components/RefRegister";
 
 // State로 사용자 입력 관리하기1
 
 function App4() {
   return (
     <>
-      <App />
+      <RefRegister />
+      <AppRef />
       <NewRegister />
       <LoginForm />
       <InputExample2 />
