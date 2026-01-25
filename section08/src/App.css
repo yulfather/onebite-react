@@ -1,0 +1,12 @@
+.App {
+  width: 500px;
+  margin: 0 auto;
+
+  /* display: flex -> 자식요소들의 배치를 유연하게 */
+  /* -> 배치 row형태로 변함 */
+  display: flex;
+  /* row형태 배치를 column으로 변경 */
+  flex-direction: column;
+  /* gap은 display가 flex로 설정되어야 사용가능 */
+  gap: 10px;
+}

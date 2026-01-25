@@ -1,0 +1,22 @@
+.Editor {
+  display: flex;
+  gap: 10px;
+}
+
+.Editor input {
+  /* flex: 1; 이렇게 설정하면 부모 크기안에서 최대치로 설정됨 */
+  flex: 1;
+  padding: 15px;
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 5px;
+}
+
+.Editor button {
+  /* cursor: pointer; -> 마우스 호버시 pointer(손모양)로 변함 */
+  cursor: pointer;
+  width: 80px;
+  border: none;
+  background-color: rgb(37, 146, 255);
+  border-radius: 5px;
+  color: white;
+}
