@@ -40,11 +40,34 @@ function App() {
     setTodos([newTodo, ...todos]);
   };
 
+  // map() → 개수는 그대로, 내용만 수정
+  // -> todos 배열의 길이는 그대로 유지 특정 id를 가진 객체 하나만 수정 나머지는 그대로 유지
+  // -> map의 특징
+  //  -> 배열길이 = 원본과 동일
+  //  -> 각 요소를 다른 값으로 "변환"가능
+
+  // filter() → 개수 자체를 줄이거나 제거
+  // -> 특정 id를 가진 객체를 완전히 제거 결과 배열의 길이가 줄어듦
+  // -> filter()의 특징
+  //  -> 조건을 통과한 요소만 남김
+  //  -> 조건을 통과 못 하면 아예 사라짐
+  const onUpdate = (targetId) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === targetId ? { ...todo, isDone: !todo.isDone } : todo,
+      ),
+    );
+  };
+
+  const onDelete = (targetId) => {
+    setTodos(todos.filter((todo) => todo.id !== targetId));
+  };
+
   return (
     <div className="App">
       <Header />
       <Editor onCreate={onCreate} />
-      <List todos={todos} />
+      <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
     </div>
   );
 }
