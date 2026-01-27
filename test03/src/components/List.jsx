@@ -2,7 +2,7 @@ import "./List.css";
 import TodoItem from "./TodoItem";
 import { useState } from "react";
 
-function List({ todos }) {
+function List({ todos, onUpdate, onDelete }) {
   const [search, setSearch] = useState("");
 
   const onChangeSearch = (e) => {
@@ -18,7 +18,7 @@ function List({ todos }) {
     );
   };
 
-  const filteredTodos = getFilteredData();
+  const filterTodos = getFilteredData();
 
   return (
     <div className="List">
@@ -29,8 +29,15 @@ function List({ todos }) {
         placeholder="검색어를 입력하세요"
       />
       <div className="item_wrapper">
-        {filteredTodos.map((todo) => {
-          return <TodoItem key={todo.id} {...todo} />;
+        {filterTodos.map((todo) => {
+          return (
+            <TodoItem
+              key={todo.id}
+              {...todo}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+            />
+          );
         })}
       </div>
     </div>

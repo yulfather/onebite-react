@@ -20,6 +20,6 @@
 }
 
 .Editor .editor-input.error:focus {
-  border: 2px solid red;
+  border: 1px solid red;
   outline: none;
 }
