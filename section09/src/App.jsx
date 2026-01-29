@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import Header from "./components/Header";
 import Editor from "./components/Editor";
 import List from "./components/List";
+import Exam from "./components/Exam";
 
 // 기능구현
 // -> Editor 컴포넌트에서 입력한 새로운 Todo가
@@ -85,6 +86,7 @@ function App() {
 
   return (
     <div className="App">
+      <Exam />
       <Header />
       <Editor onCreate={onCreate} />
       <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />

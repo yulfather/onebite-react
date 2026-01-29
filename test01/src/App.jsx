@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import Header from "./components/Header";
 import List from "./components/List";
 import Editor from "./components/Editor";
+import Exam from "./components/Exam";
 
 // 초기배열 state로 전달
 const mockData = [
@@ -74,6 +75,7 @@ function App() {
 
   return (
     <div className="App">
+      <Exam />
       <Header />
       <Editor onCreate={onCreate} />
       <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
