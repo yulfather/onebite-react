@@ -1,9 +1,9 @@
-import "./App.css";
-import { useState, useRef } from "react";
-import Header from "./components/Header";
-import Editor from "./components/Editor";
-import List from "./components/List";
-import Exam from "./components/Exam";
+import './App.css';
+import { useState, useRef, useReducer } from 'react';
+import Header from './components/Header';
+import Editor from './components/Editor';
+import List from './components/List';
+import Exam from './components/Exam';
 
 // 기능구현
 // -> Editor 컴포넌트에서 입력한 새로운 Todo가
@@ -21,26 +21,44 @@ const mockData = [
   {
     id: 0,
     isDone: false,
-    content: "react 공부하기",
+    content: 'react 공부하기',
     date: new Date().getTime(),
   },
   {
     id: 1,
     isDone: false,
-    content: "nextjs 공부하기",
+    content: 'nextjs 공부하기',
     date: new Date().getTime(),
   },
   {
     id: 2,
     isDone: false,
-    content: "javascript 공부하기",
+    content: 'javascript 공부하기',
     date: new Date().getTime(),
   },
 ];
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'CREATE':
+      return [action.data, ...state];
+    case 'UPDATE':
+      return state.map((item) =>
+        item.id === action.targetId
+          ? { ...item, isDone: !item.isDone }
+          : item,
+      );
+    case 'DELETE':
+      return state.filter(
+        (item) => item.id !== action.targetId,
+      );
+  }
+};
+
 function App() {
   // mockDate의 값으로 App컴포넌트 내부 state의 todos 초기값으로 설정
-  const [todos, setTodos] = useState(mockData);
+  // const [todos, setTodos] = useState(mockData);
+  const [todos, dispatch] = useReducer(reducer, mockData);
 
   // id값을 고유값으로 저장하기 위한 reference객체를 생성
   const idRef = useRef(3);
@@ -49,36 +67,56 @@ function App() {
   // 추가하기 하였을때 todos state값을 변경하여야 한다.
   // todos값을 바꿀려면 setTodos를 호출하여 초기데이터 변경
   // Editor에 입력한 값을 content로 받아와 기존 객체형태와 동일한구조로 만들어야됨
-  const onCreate = (content) => {
-    const newTodos = {
-      id: idRef.current++,
-      isDone: false,
-      content: content,
-      date: new Date().getTime(),
-    };
+  // const onCreate = (content) => {
+  //   dispatch({
+  //     type: 'CREATE',
+  //     data: {
+  //       id: idRef.current++,
+  //       isDone: false,
+  //       content: content,
+  //       date: new Date().getTime(),
+  //     },
+  //   });
+  // };
 
-    // todos와 같은 state값은 상태변화 함수인 setTodos로 변경해야
-    // 변경된 state값을 리액트가 감지하여 컴포넌트를 정상적으로 리렌더링 할 수 있다.
-    setTodos([newTodos, ...todos]);
-  };
+  const onDispatch = (action) => dispatch(action);
+
+  const onCreate = (content) =>
+    onDispatch({
+      type: 'CREATE',
+      data: {
+        id: idRef.current++,
+        isDone: false,
+        content: content,
+        date: new Date().getTime(),
+      },
+    });
+
+  const onUpdate = (targetId) =>
+    onDispatch({ type: 'UPDATE', targetId });
+
+  const onDelete = (targetId) =>
+    onDispatch({ type: 'DELETE', targetId });
 
   // isDone이라는 프로퍼티에 check박스 토글로 false라면 True, true라면 false로 변경
-  const onUpdate = (targetId) => {
-    // todos State의 값들 중
-    // targetId와 일치하는 id를 갖는 투두 아이템의 isDone 변경
+  // const onUpdate = (targetId) => {
+  // todos State의 값들 중
+  // targetId와 일치하는 id를 갖는 투두 아이템의 isDone 변경
 
-    // 인수: todos 배열에서 targetId와 일치하는 id를 갖는 요소의 데이터만 딱 바꾼 새로운 배열
-    setTodos(
-      todos.map((todo) =>
-        todo.id === targetId ? { ...todo, isDone: !todo.isDone } : todo,
-      ),
-    );
-  };
+  // 인수: todos 배열에서 targetId와 일치하는 id를 갖는 요소의 데이터만 딱 바꾼 새로운 배열
+  //   setTodos(
+  //     todos.map((todo) =>
+  //       todo.id === targetId
+  //         ? { ...todo, isDone: !todo.isDone }
+  //         : todo,
+  //     ),
+  //   );
+  // };
 
-  const onDelete = (targetId) => {
-    // 인수: todos 배열에서 targetId와 일치하는 id를 갖는 요소만 삭제한 새로운 배열
-    setTodos(todos.filter((todo) => todo.id !== targetId));
-  };
+  // const onDelete = (targetId) => {
+  // 인수: todos 배열에서 targetId와 일치하는 id를 갖는 요소만 삭제한 새로운 배열
+  //   setTodos(todos.filter((todo) => todo.id !== targetId));
+  // };
 
   // Editor컴포넌트에 onCreate 이벤트헨들러 함수를 props로 전달
   // 저장된 data todos로 List에 전달
@@ -89,7 +127,11 @@ function App() {
       <Exam />
       <Header />
       <Editor onCreate={onCreate} />
-      <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
+      <List
+        todos={todos}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+      />
     </div>
   );
 }
