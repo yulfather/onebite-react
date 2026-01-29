@@ -1,6 +1,6 @@
-import "./List.css";
-import TodoItem from "./TodoItem";
-import { useState } from "react";
+import './List.css';
+import TodoItem from './TodoItem';
+import { useState, useMemo } from 'react';
 
 // App에서 전달된 todos를 구조분해할당으로 List컴포넌트 매개변수로 받는다.
 // 전달된 todos의 배열을 todos.map(() => {})구조로 받아 새로운 배열을 리터한다
@@ -17,7 +17,7 @@ import { useState } from "react";
 // 현재 검색어를 state로 보관할 필요 있음
 
 const List = ({ todos, onUpdate, onDelete }) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   // 검색 인풋에 입력된 값들이 search에 저장
   // search state에 값이 바뀔때마다 리렌더링이 발생
@@ -27,7 +27,7 @@ const List = ({ todos, onUpdate, onDelete }) => {
   };
 
   const getFilteredData = () => {
-    if (search === "") {
+    if (search === '') {
       return todos;
     }
     // filter() 내부 함수에 반환값이 true인 경우에 값들만 새배열 만들어 담음
@@ -42,7 +42,9 @@ const List = ({ todos, onUpdate, onDelete }) => {
     // {} 사용했다면 return을 명시
     // return을 사용안할라믄 {}중괄호 제거 (중괄호 {} 제거 → 자동 return)
     return todos.filter((todo) =>
-      todo.content.toLowerCase().includes(search.toLowerCase()),
+      todo.content
+        .toLowerCase()
+        .includes(search.toLowerCase()),
     );
   };
 
@@ -50,9 +52,30 @@ const List = ({ todos, onUpdate, onDelete }) => {
   // 필터링된 todos값을 사용하도록 만듬
   const filteredTodos = getFilteredData();
 
+  const { totalCount, doneCount, notDoneCount } =
+    useMemo(() => {
+      console.log('useMemo 실행');
+      const totalCount = todos.length;
+      const doneCount = todos.filter(
+        (todo) => !todo.isDone,
+      ).length;
+      const notDoneCount = totalCount - doneCount;
+
+      return {
+        totalCount,
+        doneCount,
+        notDoneCount,
+      };
+    }, [todos]);
+
   return (
     <div className="List">
       <h4>Todo List🌱</h4>
+      <div>
+        <div>total : {totalCount}</div>
+        <div>done : {doneCount}</div>
+        <div>notDone : {notDoneCount}</div>
+      </div>
       <input
         value={search}
         onChange={onChangeSearch}
