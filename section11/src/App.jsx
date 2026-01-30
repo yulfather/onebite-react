@@ -3,10 +3,15 @@ import Header from './components/Header';
 import Editor from './components/Editor';
 import List from './components/List';
 import {
+  TodoDispatchContext,
+  TodoStateContext,
+} from './context/TodoContext';
+import {
   useReducer,
   useRef,
   useState,
   useCallback,
+  useMemo,
 } from 'react';
 
 const mockData = [
@@ -55,30 +60,6 @@ function App() {
 
   const onDispatch = (action) => dispatch(action);
 
-  // useCallback
-  // -> 함수를 기억(memoization)해서, 불필요한 재생성을 막는 Hook
-  // const memoizedFn = useCallback(fn, deps);
-  // - fn: 기억하고 싶은 함수
-  // - deps: 이 값들이 바뀔 때만 새로 만듬
-
-  // const onCreate = (content) =>
-  //   onDispatch({
-  //     type: 'CREATE',
-  //     data: {
-  //       id: idRef.current++,
-  //       isDone: false,
-  //       content: content,
-  //       date: new Date().getTime(),
-  //     },
-  //   });
-
-  // const onUpdate = (targetId) =>
-  //   onDispatch({ type: 'UPDATE', targetId });
-
-  // const onDelete = (targetId) => {
-  //   onDispatch({ type: 'DELETE', targetId });
-  // };
-
   const onCreate = useCallback(
     (content) =>
       onDispatch({
@@ -101,15 +82,19 @@ function App() {
     onDispatch({ type: 'DELETE', targetId });
   }, []);
 
+  const memoizedDispatch = useMemo(() => {
+    return { onCreate, onUpdate, onDelete };
+  }, []);
+
   return (
     <div className="App">
       <Header />
-      <Editor onCreate={onCreate} />
-      <List
-        todos={todos}
-        onUpdate={onUpdate}
-        onDelete={onDelete}
-      />
+      <TodoStateContext value={todos}>
+        <TodoDispatchContext value={memoizedDispatch}>
+          <Editor />
+          <List />
+        </TodoDispatchContext>
+      </TodoStateContext>
     </div>
   );
 }
