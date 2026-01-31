@@ -1,5 +1,10 @@
 import './App.css';
-import { useState, useRef, useReducer } from 'react';
+import {
+  useState,
+  useRef,
+  useReducer,
+  useCallback,
+} from 'react';
 import Header from './components/Header';
 import Editor from './components/Editor';
 import List from './components/List';
@@ -49,31 +54,73 @@ function App() {
   const [todos, dispatch] = useReducer(reducer, mockData);
   const idRef = useRef(3);
 
-  const onCreate = (content) => {
-    dispatch({
+  const onDispatchTodos = (action) => dispatch(action);
+
+  // const onCreate = (content) => {
+  //   onDispatchTodos({
+  //     type: 'CREATE',
+  //     data: {
+  //       id: idRef.current++,
+  //       idDone: false,
+  //       content: content,
+  //       date: new Date().getTime(),
+  //     },
+  //   });
+  // };
+
+  // const onUpdate = (targetId) => {
+  //   onDispatchTodos({ type: 'UPDATE', targetId });
+  // };
+
+  // const onDelete = (targetId) => {
+  //   onDispatchTodos({ type: 'DELETE', targetId });
+  // };
+  // const onCreate = (content) => {
+  //   dispatch({
+  //     type: 'CREATE',
+  //     data: {
+  //       id: idRef.current++,
+  //       isDone: false,
+  //       content: content,
+  //       date: new Date().getTime(),
+  //     },
+  //   });
+  // };
+
+  // const onUpdate = (targetId) => {
+  //   dispatch({
+  //     type: 'UPDATE',
+  //     targetId: targetId,
+  //   });
+  // };
+
+  // const onDelete = (targetId) => {
+  //   dispatch({
+  //     type: 'DELETE',
+  //     targetId: targetId,
+  //   });
+  // };
+
+  // useCallback(최적화 하고 싶은 함수, 의존성 배열)
+  const onCreate = useCallback((content) => {
+    onDispatchTodos({
       type: 'CREATE',
       data: {
         id: idRef.current++,
-        isDone: false,
+        idDone: false,
         content: content,
         date: new Date().getTime(),
       },
     });
-  };
+  }, []);
 
-  const onUpdate = (targetId) => {
-    dispatch({
-      type: 'UPDATE',
-      targetId: targetId,
-    });
-  };
+  const onUpdate = useCallback((targetId) => {
+    onDispatchTodos({ type: 'UPDATE', targetId });
+  }, []);
 
-  const onDelete = (targetId) => {
-    dispatch({
-      type: 'DELETE',
-      targetId: targetId,
-    });
-  };
+  const onDelete = useCallback((targetId) => {
+    onDispatchTodos({ type: 'DELETE', targetId });
+  }, []);
 
   return (
     <div className="App">
