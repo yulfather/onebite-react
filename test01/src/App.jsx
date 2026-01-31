@@ -1,5 +1,5 @@
 import './App.css';
-import { useState, useRef, useReducer } from 'react';
+import { useRef, useReducer } from 'react';
 import Header from './components/Header';
 import List from './components/List';
 import Editor from './components/Editor';

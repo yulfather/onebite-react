@@ -14,7 +14,10 @@ function List() {
   // Context 기본값 / Provider value가 늦게 채워짐
   //  -> props로 내려줄때 아직 전달이 안됨 -> undefined
   // 방어코드
-  const safeTodos = Array.isArray(todos) ? todos : [];
+  const EMPTY_TODOS = [];
+  const safeTodos = Array.isArray(todos)
+    ? todos
+    : EMPTY_TODOS;
 
   const getFilteredTodo = () => {
     if (search === '') {

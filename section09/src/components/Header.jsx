@@ -1,15 +1,19 @@
-import "./Header.css";
+import './Header.css';
+import { memo } from 'react';
 
 const Header = () => {
   return (
     <div className="Header">
       <h3>오늘은🗓️</h3>
-      <h1>{new Date().toLocaleDateString("ko-KR")}</h1>
+      <h1>{new Date().toLocaleDateString('ko-KR')}</h1>
     </div>
   );
 };
 
-export default Header;
+// const memoizedHeader = memo(Header);
+// export default memoizedHeader;
+
+export default memo(Header);
 
 // 1. new Date() 활용
 //  -> 현재 시각을 가진 Date 객체생성

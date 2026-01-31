@@ -1,11 +1,19 @@
-import "./TodoItem.css";
+import './TodoItem.css';
+import { memo } from 'react';
 
 // id, isDone, content, date 구조분해할당으로 받아
 // input checkbox에 속성으로 isDone을 전달
 // div content에 -> content전달
 // div date에 -> date전달
 
-const TodoItem = ({ id, isDone, content, date, onUpdate, onDelete }) => {
+const TodoItem = ({
+  id,
+  isDone,
+  content,
+  date,
+  onUpdate,
+  onDelete,
+}) => {
   // onClick이 아니라 onChange이벤트를 사용한 이유는 적용 대상이 input태그라 그럼
   const onChangeCheckbox = () => {
     onUpdate(id);
@@ -24,10 +32,20 @@ const TodoItem = ({ id, isDone, content, date, onUpdate, onDelete }) => {
         type="checkbox"
       />
       <div className="content">{content}</div>
-      <div className="date">{new Date(date).toLocaleDateString()}</div>
+      <div className="date">
+        {new Date(date).toLocaleDateString()}
+      </div>
       <button onClick={onClickDelete}>삭제</button>
     </div>
   );
 };
 
-export default TodoItem;
+// 고차 컴포넌트 (HOC)
+export default memo(TodoItem, (prevProps, nextProps) => {
+  if (prevProps.id !== nextProps.id) return false;
+  if (prevProps.isDone !== nextProps.isDone) return false;
+  if (prevProps.content !== nextProps.content) return false;
+  if (prevProps.date !== nextProps.date) return false;
+
+  return true;
+});

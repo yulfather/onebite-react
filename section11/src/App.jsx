@@ -84,7 +84,7 @@ function App() {
 
   const memoizedDispatch = useMemo(() => {
     return { onCreate, onUpdate, onDelete };
-  }, []);
+  }, [onCreate, onUpdate, onDelete]);
 
   return (
     <div className="App">
