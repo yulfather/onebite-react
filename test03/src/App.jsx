@@ -1,5 +1,5 @@
 import './App.css';
-import { useState, useRef, useReducer } from 'react';
+import { useCallback, useRef, useReducer } from 'react';
 import Header from './components/Header';
 import Editor from './components/Editor';
 import List from './components/List';
@@ -53,25 +53,42 @@ function App() {
 
   const onDispatch = (action) => dispatch(action);
 
-  const onCreate = (content) => {
+  const onCreate = useCallback((content) => {
     onDispatch({
-      type: 'CREATE',
-      data: {
-        id: idRef.current++,
-        isDone: false,
-        content: content,
-        date: new Date().getTime(),
-      },
+      id: idRef.current++,
+      idDone: false,
+      content: content,
+      date: new Date().getTime(),
     });
-  };
+  }, []);
 
-  const onUpdate = (targetId) => {
+  const onUpdate = useCallback((targetId) => {
     onDispatch({ type: 'UPDATE', targetId });
-  };
+  }, []);
 
-  const onDelete = (targetId) => {
+  const onDelete = useCallback((targetId) => {
     onDispatch({ type: 'DELETE', targetId });
-  };
+  }, []);
+
+  // const onCreate = (content) => {
+  //   onDispatch({
+  //     type: 'CREATE',
+  //     data: {
+  //       id: idRef.current++,
+  //       isDone: false,
+  //       content: content,
+  //       date: new Date().getTime(),
+  //     },
+  //   });
+  // };
+
+  // const onUpdate = (targetId) => {
+  //   onDispatch({ type: 'UPDATE', targetId });
+  // };
+
+  // const onDelete = (targetId) => {
+  //   onDispatch({ type: 'DELETE', targetId });
+  // };
 
   // const onCreate = (content) => {
   //   const newTodo = {

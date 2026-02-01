@@ -3,7 +3,7 @@ import Header from './components/Header';
 import Editor from './components/Editor';
 import List from './components/List';
 import Exam from './components/Exam';
-import { useState, useRef, useReducer } from 'react';
+import { useCallback, useRef, useReducer } from 'react';
 
 const mockData = [
   {
@@ -49,7 +49,7 @@ function App() {
 
   const onDispatch = (action) => dispatch(action);
 
-  const onCreate = (content) =>
+  const onCreate = useCallback((content) => {
     onDispatch({
       type: 'CREATE',
       data: {
@@ -59,12 +59,32 @@ function App() {
         date: new Date().getTime(),
       },
     });
+  }, []);
 
-  const onUpdate = (targetId) =>
+  const onUpdate = useCallback((targetId) => {
     onDispatch({ type: 'UPDATE', targetId });
+  }, []);
 
-  const onDelete = (targetId) =>
+  const onDelete = useCallback((targetId) => {
     onDispatch({ type: 'DELETE', targetId });
+  }, []);
+
+  // const onCreate = (content) =>
+  //   onDispatch({
+  //     type: 'CREATE',
+  //     data: {
+  //       id: idRef.current++,
+  //       isDone: false,
+  //       content: content,
+  //       date: new Date().getTime(),
+  //     },
+  //   });
+
+  // const onUpdate = (targetId) =>
+  //   onDispatch({ type: 'UPDATE', targetId });
+
+  // const onDelete = (targetId) =>
+  //   onDispatch({ type: 'DELETE', targetId });
 
   // const [todos, setTodos] = useState(mockData);
 
