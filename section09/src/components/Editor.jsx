@@ -1,14 +1,16 @@
-import "./Editor.css";
-import { useState, useRef } from "react";
+import './Editor.css';
+import { useState, useRef, useContext } from 'react';
+import { TodoDispatchContext } from '../App';
 
 // 1. Editor컴퍼넌트에서 추가 번트이 클릭되어 onSubmit함수가 실행
 // 2. onSubmit함수가 실행되면 App컴퍼넌트로 부터 전달받은 onCreate함수 실행
 // 3. onCreate함수가 호출되면서 input테그에 입력한 값이 content를 인수로 전달
 
-const Editor = ({ onCreate }) => {
+const Editor = () => {
   // input에서 입력되는 값을 이벤트 헨들러로 가져오기
   // 입력된 값을 state로 받아 content값 변경
-  const [content, setContent] = useState("");
+  const { onCreate } = useContext(TodoDispatchContext);
+  const [content, setContent] = useState('');
 
   // 빈입력 시 포커스 선택자로 사용
   const contentRef = useRef();
@@ -31,14 +33,14 @@ const Editor = ({ onCreate }) => {
   const onSubmit = () => {
     // 빈입력 방지 코드
     // 비입력 시 포커스 기능
-    if (content === "") {
+    if (content === '') {
       contentRef.current.focus();
       return;
     }
     onCreate(content);
 
     // 입력 후 추가버튼 클릭 다음 input reset
-    setContent("");
+    setContent('');
   };
 
   return (

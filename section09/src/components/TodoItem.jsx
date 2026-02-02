@@ -1,19 +1,16 @@
 import './TodoItem.css';
-import { memo } from 'react';
+import { memo, useContext } from 'react';
+import { TodoDispatchContext } from '../App';
 
 // id, isDone, content, date 구조분해할당으로 받아
 // input checkbox에 속성으로 isDone을 전달
 // div content에 -> content전달
 // div date에 -> date전달
 
-const TodoItem = ({
-  id,
-  isDone,
-  content,
-  date,
-  onUpdate,
-  onDelete,
-}) => {
+const TodoItem = ({ id, isDone, content, date }) => {
+  const { onUpdate, onDelete } = useContext(
+    TodoDispatchContext,
+  );
   // onClick이 아니라 onChange이벤트를 사용한 이유는 적용 대상이 input태그라 그럼
   const onChangeCheckbox = () => {
     onUpdate(id);

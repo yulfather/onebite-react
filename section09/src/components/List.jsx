@@ -1,6 +1,7 @@
 import './List.css';
 import TodoItem from './TodoItem';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useContext } from 'react';
+import { TodoStateContex } from '../App';
 
 // App에서 전달된 todos를 구조분해할당으로 List컴포넌트 매개변수로 받는다.
 // 전달된 todos의 배열을 todos.map(() => {})구조로 받아 새로운 배열을 리터한다
@@ -16,7 +17,8 @@ import { useState, useMemo } from 'react';
 // 검색기능 -> 검색어 변경시 리렌더링
 // 현재 검색어를 state로 보관할 필요 있음
 
-const List = ({ todos, onUpdate, onDelete }) => {
+const List = () => {
+  const todos = useContext(TodoStateContex);
   const [search, setSearch] = useState('');
 
   // 검색 인풋에 입력된 값들이 search에 저장
@@ -25,6 +27,11 @@ const List = ({ todos, onUpdate, onDelete }) => {
   const onChangeSearch = (e) => {
     setSearch(e.target.value);
   };
+
+  // const EMPTY_TODOS = [];
+  // const safeTodos = Array.isArray(todos)
+  //   ? todos
+  //   : EMPTY_TODOS;
 
   const getFilteredData = () => {
     if (search === '') {
@@ -83,14 +90,7 @@ const List = ({ todos, onUpdate, onDelete }) => {
       />
       <div className="todos_wrapper">
         {filteredTodos.map((todo) => {
-          return (
-            <TodoItem
-              key={todo.id}
-              {...todo}
-              onUpdate={onUpdate}
-              onDelete={onDelete}
-            />
-          );
+          return <TodoItem key={todo.id} {...todo} />;
         })}
       </div>
     </div>

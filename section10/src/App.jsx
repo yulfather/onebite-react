@@ -5,8 +5,9 @@ import List from './components/List';
 import {
   useReducer,
   useRef,
-  useState,
+  useMemo,
   useCallback,
+  createContext,
 } from 'react';
 
 const mockData = [
@@ -48,6 +49,9 @@ const reducer = (state, action) => {
       state;
   }
 };
+
+export const TodoStateContext = createContext();
+export const TodoDispatchContext = createContext();
 
 function App() {
   const [todos, dispatch] = useReducer(reducer, mockData);
@@ -101,15 +105,19 @@ function App() {
     onDispatch({ type: 'DELETE', targetId });
   }, []);
 
+  const memoizedDispatch = useMemo(() => {
+    return { onCreate, onUpdate, onDelete };
+  }, []);
+
   return (
     <div className="App">
       <Header />
-      <Editor onCreate={onCreate} />
-      <List
-        todos={todos}
-        onUpdate={onUpdate}
-        onDelete={onDelete}
-      />
+      <TodoStateContext value={todos}>
+        <TodoDispatchContext value={memoizedDispatch}>
+          <Editor />
+          <List />
+        </TodoDispatchContext>
+      </TodoStateContext>
     </div>
   );
 }

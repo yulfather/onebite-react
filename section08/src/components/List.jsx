@@ -1,19 +1,26 @@
 import './List.css';
 import TodoItem from './TodoItem';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useContext } from 'react';
+import { TodoStateContext } from '../App';
 
-const List = ({ todos, onUpdate, onDelete }) => {
+const List = () => {
+  const todos = useContext(TodoStateContext);
   const [search, setSearch] = useState('');
 
   const onChangeSearch = (e) => {
     setSearch(e.target.value);
   };
 
+  const EMPTY_TODO = [];
+  const safeTodos = Array.isArray(todos)
+    ? todos
+    : EMPTY_TODO;
+
   const filteredData = () => {
     if (search === '') {
-      return todos;
+      return safeTodos;
     }
-    return todos.filter((todo) =>
+    return safeTodos.filter((todo) =>
       todo.content
         .toLowerCase()
         .includes(search.toLowerCase()),
@@ -25,8 +32,8 @@ const List = ({ todos, onUpdate, onDelete }) => {
   const { totalCount, doneCount, notDoneCount } =
     useMemo(() => {
       console.log('useMemo test');
-      const totalCount = todos.length;
-      const doneCount = todos.filter(
+      const totalCount = safeTodos.length;
+      const doneCount = safeTodos.filter(
         (todo) => !todo.isDone,
       ).length;
       const notDoneCount = totalCount - doneCount;
@@ -36,7 +43,7 @@ const List = ({ todos, onUpdate, onDelete }) => {
         doneCount,
         notDoneCount,
       };
-    }, [todos]);
+    }, [safeTodos]);
 
   return (
     <div className="List">
@@ -53,14 +60,7 @@ const List = ({ todos, onUpdate, onDelete }) => {
       />
       <div className="todos_wrapper">
         {filteredTodos.map((todo) => {
-          return (
-            <TodoItem
-              key={todo.id}
-              {...todo}
-              onUpdate={onUpdate}
-              onDelete={onDelete}
-            />
-          );
+          return <TodoItem key={todo.id} {...todo} />;
         })}
       </div>
     </div>

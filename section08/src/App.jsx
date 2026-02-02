@@ -1,9 +1,10 @@
 import './App.css';
 import {
-  useState,
+  useMemo,
   useRef,
   useReducer,
   useCallback,
+  createContext,
 } from 'react';
 import Header from './components/Header';
 import Editor from './components/Editor';
@@ -49,6 +50,18 @@ const reducer = (state, action) => {
       state;
   }
 };
+
+// createContext() Component외부에 생성
+// -> 데이터를 하위 component에게 전달만 하면됨
+// App Coponent가 리렌더링 될때만 다시 생성될 필요 없음
+// createContext내부에 provider 프로퍼티를 활용해 컴포넌트를 만들 수 있음
+// -> provider의 본질은 component임 -> props전달 받는 component를 감싸서 사용
+// <TodoContext.provider><Editor onCreate={onCreate} /></TodoContext.provider>
+
+// 변하는값
+export const TodoStateContext = createContext();
+// 변하지 않는값
+export const TodoDispatchContext = createContext();
 
 function App() {
   const [todos, dispatch] = useReducer(reducer, mockData);
@@ -122,16 +135,22 @@ function App() {
     onDispatchTodos({ type: 'DELETE', targetId });
   }, []);
 
+  const memoizedDispatch = useMemo(() => {
+    return { onCreate, onUpdate, onDelete };
+  }, []);
+
   return (
     <div className="App">
       <Exam />
       <Header />
-      <Editor onCreate={onCreate} />
-      <List
-        todos={todos}
-        onUpdate={onUpdate}
-        onDelete={onDelete}
-      />
+      <TodoStateContext.Provider value={todos}>
+        <TodoDispatchContext.Provider
+          value={memoizedDispatch}
+        >
+          <Editor />
+          <List />
+        </TodoDispatchContext.Provider>
+      </TodoStateContext.Provider>
     </div>
   );
 }

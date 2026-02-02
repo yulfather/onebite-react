@@ -1,5 +1,10 @@
 import './App.css';
-import { useState, useRef, useReducer } from 'react';
+import {
+  useMemo,
+  useRef,
+  useReducer,
+  createContext,
+} from 'react';
 import Header from './components/Header';
 import Editor from './components/Editor';
 import List from './components/List';
@@ -54,6 +59,9 @@ const reducer = (state, action) => {
       );
   }
 };
+
+export const TodoStateContex = createContext();
+export const TodoDispatchContext = createContext();
 
 function App() {
   // mockDate의 값으로 App컴포넌트 내부 state의 todos 초기값으로 설정
@@ -122,16 +130,22 @@ function App() {
   // 저장된 data todos로 List에 전달
   // check박스가 적용될 자식 컴포넌에게 onUpdate전달
 
+  const memoizedDispatch = useMemo(() => {
+    return { onCreate, onUpdate, onDelete };
+  }, []);
+
   return (
     <div className="App">
       <Exam />
       <Header />
-      <Editor onCreate={onCreate} />
-      <List
-        todos={todos}
-        onUpdate={onUpdate}
-        onDelete={onDelete}
-      />
+      <TodoStateContex.Provider value={todos}>
+        <TodoDispatchContext.Provider
+          value={memoizedDispatch}
+        >
+          <Editor />
+          <List />
+        </TodoDispatchContext.Provider>
+      </TodoStateContex.Provider>
     </div>
   );
 }
