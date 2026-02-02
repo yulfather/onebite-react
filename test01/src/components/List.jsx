@@ -1,13 +1,20 @@
 import './List.css';
 import TodoItem from './TodoItem';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useContext } from 'react';
+import { TodoStateContext } from '../context/TodoContext';
 
-function List({ todos, onUpdate, onDelete }) {
+function List() {
+  const todos = useContext(TodoStateContext);
   const [search, setSearch] = useState('');
 
   const onChangeSearch = (e) => {
     setSearch(e.target.value);
   };
+
+  // const EMPTY_TODO = [];
+  // const safeTodo = Array.isArray(todos)
+  //   ? todos
+  //   : EMPTY_TODO;
 
   const getFilteredData = () => {
     if (search === '') {
@@ -53,14 +60,7 @@ function List({ todos, onUpdate, onDelete }) {
       />
       <div className="Todos_wrapper">
         {filteredTodos.map((todo) => {
-          return (
-            <TodoItem
-              key={todo.id}
-              {...todo}
-              onUpdate={onUpdate}
-              onDelete={onDelete}
-            />
-          );
+          return <TodoItem key={todo.id} {...todo} />;
         })}
       </div>
     </div>

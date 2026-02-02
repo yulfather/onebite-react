@@ -1,8 +1,10 @@
-import "./Editor.css";
-import { useState, useRef } from "react";
+import './Editor.css';
+import { useState, useRef, useContext } from 'react';
+import { TodosDispatchContext } from '../context/TodoContext';
 
-function Editor({ onCreate }) {
-  const [content, setContent] = useState("");
+function Editor() {
+  const { onCreate } = useContext(TodosDispatchContext);
+  const [content, setContent] = useState('');
   const contentRef = useRef();
 
   const onChangeContent = (e) => {
@@ -16,12 +18,12 @@ function Editor({ onCreate }) {
   };
 
   const onSubmit = () => {
-    if (content === "") {
+    if (content === '') {
       contentRef.current.focus();
       return;
     }
     onCreate(content);
-    setContent("");
+    setContent('');
   };
 
   return (

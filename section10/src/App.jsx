@@ -107,17 +107,19 @@ function App() {
 
   const memoizedDispatch = useMemo(() => {
     return { onCreate, onUpdate, onDelete };
-  }, []);
+  }, [onCreate, onUpdate, onDelete]);
 
   return (
     <div className="App">
       <Header />
-      <TodoStateContext value={todos}>
-        <TodoDispatchContext value={memoizedDispatch}>
+      <TodoStateContext.Provider value={todos}>
+        <TodoDispatchContext.Provider
+          value={memoizedDispatch}
+        >
           <Editor />
           <List />
-        </TodoDispatchContext>
-      </TodoStateContext>
+        </TodoDispatchContext.Provider>
+      </TodoStateContext.Provider>
     </div>
   );
 }

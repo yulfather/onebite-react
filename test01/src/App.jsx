@@ -1,9 +1,18 @@
 import './App.css';
-import { useRef, useReducer, useCallback } from 'react';
+import {
+  useRef,
+  useReducer,
+  useCallback,
+  useMemo,
+} from 'react';
 import Header from './components/Header';
 import List from './components/List';
 import Editor from './components/Editor';
 import Exam from './components/Exam';
+import {
+  TodoStateContext,
+  TodoDispatchContext,
+} from './context/TodoContext';
 
 // 초기배열 state로 전달
 const mockData = [
@@ -54,7 +63,7 @@ function App() {
   const onCreate = useCallback((content) => {
     onDispatch({
       type: 'CREATE',
-      date: {
+      data: {
         id: idRef.current++,
         isDone: false,
         content: content,
@@ -133,16 +142,22 @@ function App() {
   // setTodos(todos.filter((todo) => todo.id !== targetId));
   // };
 
+  const memoizedDispatch = useMemo(() => {
+    return { onCreate, onUpdate, onDelete };
+  }, [onCreate, onUpdate, onDelete]);
+
   return (
     <div className="App">
       <Exam />
       <Header />
-      <Editor onCreate={onCreate} />
-      <List
-        todos={todos}
-        onUpdate={onUpdate}
-        onDelete={onDelete}
-      />
+      <TodoStateContext.Provider value={todos}>
+        <TodoDispatchContext.Provider
+          value={memoizedDispatch}
+        >
+          <Editor />
+          <List />
+        </TodoDispatchContext.Provider>
+      </TodoStateContext.Provider>
     </div>
   );
 }

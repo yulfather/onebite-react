@@ -1,8 +1,10 @@
 import './List.css';
 import TodoItem from './TodoItem';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useContext } from 'react';
+import { TodosStateContext } from '../context/TodoContext';
 
-function List({ todos, onUpdate, onDelete }) {
+function List() {
+  const todos = useContext(TodosStateContext);
   const [search, setSearch] = useState('');
 
   const onChangeSearch = (e) => {
@@ -39,7 +41,7 @@ function List({ todos, onUpdate, onDelete }) {
   // useMemo 적용 코드
   const { totalCount, doneCount, notDoneCount } =
     useMemo(() => {
-      console.log('getAnalyzedDate 호출');
+      // console.log('getAnalyzedDate 호출');
       const totalCount = todos.length;
       const doneCount = todos.filter(
         (todo) => todo.isDone,
@@ -64,14 +66,7 @@ function List({ todos, onUpdate, onDelete }) {
       />
       <div className="todos_wrapper">
         {fiteredTodo.map((todo) => {
-          return (
-            <TodoItem
-              key={todo.id}
-              {...todo}
-              onUpdate={onUpdate}
-              onDelete={onDelete}
-            />
-          );
+          return <TodoItem key={todo.id} {...todo} />;
         })}
       </div>
     </div>

@@ -3,7 +3,16 @@ import Header from './components/Header';
 import Editor from './components/Editor';
 import List from './components/List';
 import Exam from './components/Exam';
-import { useCallback, useRef, useReducer } from 'react';
+import {
+  useCallback,
+  useRef,
+  useReducer,
+  useMemo,
+} from 'react';
+import {
+  TodosStateContext,
+  TodosDispatchContext,
+} from './context/TodoContext';
 
 const mockData = [
   {
@@ -113,16 +122,22 @@ function App() {
   //   setTodos(todos.filter((todo) => todo.id !== targetId));
   // };
 
+  const memoizedDispatch = useMemo(() => {
+    return { onCreate, onUpdate, onDelete };
+  }, []);
+
   return (
     <div className="App">
       <Exam />
       <Header />
-      <Editor onCreate={onCreate} />
-      <List
-        todos={todos}
-        onUpdate={onUpdate}
-        onDelete={onDelete}
-      />
+      <TodosStateContext.Provider value={todos}>
+        <TodosDispatchContext.Provider
+          value={memoizedDispatch}
+        >
+          <Editor />
+          <List />
+        </TodosDispatchContext.Provider>
+      </TodosStateContext.Provider>
     </div>
   );
 }

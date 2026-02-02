@@ -1,8 +1,10 @@
-import "./Editor.css";
-import { useState, useRef } from "react";
+import './Editor.css';
+import { useState, useRef, useContext } from 'react';
+import { TodosDispatchContext } from '../context/TodoContext';
 
-function Editor({ onCreate }) {
-  const [content, setContent] = useState("");
+function Editor() {
+  const { onCreate } = useContext(TodosDispatchContext);
+  const [content, setContent] = useState('');
   const [isError, setIsError] = useState(false);
   const contentRef = useRef();
 
@@ -17,14 +19,14 @@ function Editor({ onCreate }) {
   };
 
   const onSubmit = () => {
-    if (content === "") {
+    if (content === '') {
       setIsError(true);
       contentRef.current.focus();
       return;
     }
     onCreate(content);
     setIsError(false);
-    setContent("");
+    setContent('');
   };
 
   return (
@@ -35,7 +37,7 @@ function Editor({ onCreate }) {
         onKeyDown={onKeydown}
         onChange={onChangeContent}
         placeholder="새로운 todos...."
-        className={`editor-input ${isError ? "error" : ""}`}
+        className={`editor-input ${isError ? 'error' : ''}`}
       />
       <button onClick={onSubmit}>추가</button>
     </div>
