@@ -5,7 +5,6 @@ import { useSearchParams } from 'react-router-dom';
 // 훅 내부 프로퍼티로 params.get('value') 사용
 function Home() {
   const [params, setParams] = useSearchParams();
-  console.log(params.get('value'));
   return <div>Home</div>;
 }
 
