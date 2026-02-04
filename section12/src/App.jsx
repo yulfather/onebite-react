@@ -35,14 +35,10 @@ function reducer(state, action) {
     case 'UPDATE':
       return state.map((item) =>
         // id비교에 따라 문자열이 다를수 있기 때문에 String으로 문자열을 일치화
-        String(item.id) === String(action.data.id)
-          ? action.data
-          : item,
+        String(item.id) === String(action.data.id) ? action.data : item,
       );
     case 'DELETE':
-      return state.filter(
-        (item) => String(item.id) !== String(action.id),
-      );
+      return state.filter((item) => String(item.id) !== String(action.id));
     default:
       return state;
   }
@@ -70,12 +66,7 @@ function App() {
   };
 
   // 기존 일기 수정
-  const onUpdate = (
-    id,
-    createdDate,
-    emotionId,
-    content,
-  ) => {
+  const onUpdate = (id, createdDate, emotionId, content) => {
     dispatch({
       type: 'UPDATE',
       data: {
@@ -98,9 +89,7 @@ function App() {
   return (
     <>
       <DiaryStateContext.Provider value={data}>
-        <DiaryDispatchContext.Provider
-          value={{ onCreate, onUpdate, onDelete }}
-        >
+        <DiaryDispatchContext.Provider value={{ onCreate, onUpdate, onDelete }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/new" element={<New />} />
