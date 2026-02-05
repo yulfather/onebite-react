@@ -94,7 +94,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/new" element={<New />} />
             <Route path="/diary/:id" element={<Diary />} />
-            <Route path="/editor/:id" element={<Edit />} />
+            <Route path="/edit/:id" element={<Edit />} />
             <Route path="*" element={<Notfound />} />
           </Routes>
         </DiaryDispatchContext.Provider>
