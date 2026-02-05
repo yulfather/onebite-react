@@ -1,8 +1,11 @@
 import './App.css';
+import { useReducer } from 'react';
 import { Routes, Route, useNavigate, Link } from 'react-router-dom';
+
 import Home from './pages/Home';
 import New from './pages/New';
 import Diary from './pages/Diary';
+import Edit from './pages/Edit';
 import Notfound from './pages/Notfound';
 
 // 1. "/" : 모든 일기를 조회하는 Home 페이지
@@ -18,24 +21,35 @@ import Notfound from './pages/Notfound';
 // 동적라우팅
 // Route 속성 path 경로에 url파라미터를 사용할 것임을 명시해야됨
 //  -> path="/diary/:id"
-function App() {
-  const nav = useNavigate();
 
-  const onClickButton = () => {
-    nav('/new');
-  };
+const mockData = [
+  {
+    id: 1,
+    createdDate: new Date().getTime(),
+    emotionId: 1,
+    content: '1번 일기 내용',
+  },
+  {
+    id: 2,
+    createdDate: new Date().getTime(),
+    emotionId: 2,
+    content: '2번 일기 내용',
+  },
+];
+
+const reducer = (state, action) => {
+  return state;
+};
+
+function App() {
+  const [data, dispatch] = useReducer(reducer, mockData);
   return (
     <>
-      <div>
-        <Link to={'/'}>Home</Link>
-        <Link to={'/new'}>New</Link>
-        <Link to={'/diary'}>Diary</Link>
-      </div>
-      <button onClick={onClickButton}>new이동</button>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/new" element={<New />} />
         <Route path="/diary/:id" element={<Diary />} />
+        <Route path="/edit/:id" element={<Edit />} />
         <Route path="*" element={<Notfound />} />
       </Routes>
     </>
