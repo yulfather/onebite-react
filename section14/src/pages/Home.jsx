@@ -2,10 +2,39 @@ import Header from '../components/Header';
 import Button from '../components/Button';
 import DiaryList from '../components/DiaryList';
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { DiaryStateContex } from '../context/DiaryContext';
+
+const getMonthlyData = (pivotDate, data) => {
+  const beginTime = new Date(
+    pivotDate.getFullYear(),
+    pivotDate.getMonth(),
+    1,
+    0,
+    0,
+    0,
+  ).getTime();
+
+  const endTime = new Date(
+    pivotDate.getFullYear(),
+    pivotDate.getMonth() + 1,
+    0,
+    23,
+    59,
+    59,
+  ).getTime();
+
+  return data.filter(
+    (item) => beginTime <= item.createdDate && item.createdDate <= endTime,
+  );
+};
 
 function Home() {
+  const data = useContext(DiaryStateContex);
+
   const [pivotDate, setPivotDate] = useState(() => new Date());
+
+  const monthlyData = getMonthlyData(pivotDate, data);
 
   const IncreaseDate = () => {
     setPivotDate((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1));
@@ -22,7 +51,7 @@ function Home() {
         leftChild={<Button onClick={DecreaseDate} text={'<'} />}
         rightChild={<Button onClick={IncreaseDate} text={'>'} />}
       />
-      <DiaryList />
+      <DiaryList data={monthlyData} />
     </div>
   );
 }
