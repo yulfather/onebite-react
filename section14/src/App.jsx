@@ -2,7 +2,10 @@ import './App.css';
 
 import { Routes, Route } from 'react-router-dom';
 import { useReducer, useRef } from 'react';
-import { DiaryStateContex, DiaryDispatchContex } from './context/DiaryContext';
+import {
+  DiaryStateContext,
+  DiaryDispatchContext,
+} from './context/DiaryContext';
 
 import Home from './pages/Home';
 import New from './pages/New';
@@ -89,8 +92,8 @@ function App() {
 
   return (
     <>
-      <DiaryStateContex.Provider value={data}>
-        <DiaryDispatchContex.Provider value={{ onCreate, onUpdate, onDelete }}>
+      <DiaryStateContext.Provider value={data}>
+        <DiaryDispatchContext.Provider value={{ onCreate, onUpdate, onDelete }}>
           <Routes>
             <Route path={'/'} element={<Home />} />
             <Route path={'/new'} element={<New />} />
@@ -98,8 +101,8 @@ function App() {
             <Route path={'/Edit/:id'} element={<Edit />} />
             <Route path={'*'} element={<Notfound />} />
           </Routes>
-        </DiaryDispatchContex.Provider>
-      </DiaryStateContex.Provider>
+        </DiaryDispatchContext.Provider>
+      </DiaryStateContext.Provider>
     </>
   );
 }
