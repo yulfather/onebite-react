@@ -1,0 +1,27 @@
+body {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.App {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 0 auto;
+  width: 400px;
+}
+
+.App > section {
+  background-color: rgb(245, 245, 245);
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.App > h1 {
+  border: 1px solid black;
+  border-radius: 5px;
+  text-align: center;
+}
