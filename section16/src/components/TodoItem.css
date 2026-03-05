@@ -27,3 +27,12 @@
   padding: 5px;
   cursor: pointer;
 }
+
+.emotionImg {
+  display: inline-flex;
+  justify-content: flex-end;
+}
+
+.emotionImg > img {
+  width: 30px;
+}

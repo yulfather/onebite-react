@@ -33,8 +33,9 @@ function App() {
       data: {
         id: idRef.current++,
         isDone: false,
-        date: new Date().getTime(),
         content,
+        emotionId: 1,
+        date: new Date().getTime(),
       },
     }),
   });
@@ -44,9 +45,11 @@ function App() {
     dispatch,
     buildAction: (date, emotionId, content) => ({
       data: {
-        date,
-        emotionId,
+        id: idRef.current++,
+        isDone: false,
         content,
+        emotionId,
+        date,
       },
     }),
   });
@@ -55,6 +58,20 @@ function App() {
     type: 'UPDATETODO',
     dispatch,
     buildAction: (targetId) => ({ targetId }),
+  });
+
+  const onUpdateDiary = useActionDispatch({
+    type: 'UPDATEDIARY',
+    dispatch,
+    buildAction: (id, content, emotionId, date) => ({
+      data: {
+        id,
+        isDone: false,
+        content,
+        emotionId,
+        date,
+      },
+    }),
   });
 
   const onDelete = useActionDispatch({
@@ -67,7 +84,13 @@ function App() {
     <div className={'App'}>
       <TodosStateContext.Provider value={data}>
         <TodosDispatchContext.Provider
-          value={{ onCreateTodo, onCreateDiary, onUpdateTodo, onDelete }}
+          value={{
+            onCreateTodo,
+            onCreateDiary,
+            onUpdateTodo,
+            onUpdateDiary,
+            onDelete,
+          }}
         >
           <Routes>
             <Route path="/" element={<Home />} />

@@ -1,7 +1,16 @@
 import './TodoItem.css';
 import { memo } from 'react';
+import { getEmotionImage } from '../util/getEmotionImage';
 
-function TodoItem({ id, isDone, content, date, onUpdateTodo, onDelete }) {
+function TodoItem({
+  id,
+  isDone,
+  content,
+  emotionId,
+  date,
+  onUpdateTodo,
+  onDelete,
+}) {
   const onChangeCheckbox = () => {
     onUpdateTodo(id);
   };
@@ -17,6 +26,9 @@ function TodoItem({ id, isDone, content, date, onUpdateTodo, onDelete }) {
       <div className="content">{content}</div>
       <div className="date">{new Date(date).toLocaleDateString()}</div>
       <button onClick={onDeleteButton}>삭제</button>
+      <div className="emotionImg">
+        <img src={getEmotionImage(emotionId)} />
+      </div>
     </div>
   );
 }

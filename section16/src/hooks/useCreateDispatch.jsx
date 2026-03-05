@@ -8,6 +8,10 @@ export function reducer(state, action) {
       return state.map((item) =>
         item.id === action.targetId ? { ...item, isDone: !item.isDone } : item,
       );
+    case 'UPDATEDIARY':
+      return state.map((item) =>
+        item.id === action.data.id ? action.data : item,
+      );
     case 'DELETE':
       return state.filter((item) => item.id !== action.targetId);
     default:
